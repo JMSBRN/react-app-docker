@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  server:
+    container_name: server-v-1
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: server:auth
+    volumes:
+      - ./server:/usr/src/app
+    ports:
+      - "8080:8080"
+    command: npm start
+
+  client:
+    container_name: client-v-1
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: client:dev
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - server
+    
